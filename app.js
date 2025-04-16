@@ -3,6 +3,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
+const appRouter = require("./route");
+const catchAsync = require("./src/utils/catchAsync");
 
 const app = express();
 
@@ -17,5 +19,20 @@ app.use(cookieParser());
 //   max: 100, // Limit each IP to 100 requests per windowMs
 // });
 // app.use(limiter); // Apply the rate limiting middleware to all requests
+
+app.use(appRouter);
+
+app.use("*", (req, res, next) => {
+  res.statusCode(400).json({
+    message: "This route not found in my server",
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.log("This is the error message", err);
+  res.statusCode(400).json({
+    err,
+  });
+});
 
 module.exports = app;

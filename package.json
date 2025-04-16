@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "A simple Event planner api that enable you to host event and take away the stress of creating and selling event tickets",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "celebrate": "^15.0.3",

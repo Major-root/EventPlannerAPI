@@ -14,10 +14,15 @@ const TicketOrderSchema = new mongoose.Schema({
     ref: "Event",
     required: [true, "Event ID is required"],
   },
-  ticketType: {
+  ticketDetails: {
     name: String,
     price: Number,
     // quantity: Number,
+  },
+  ticketType: {
+    type: mongoose.Schema.ObjectId,
+    ref: "TicketCat",
+    required: [true, "Ticket type is required"],
   },
   ticketQuantity: {
     type: Number,
