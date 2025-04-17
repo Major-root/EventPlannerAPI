@@ -14,8 +14,8 @@ exports.registerUser = async (req) => {
     name,
     email,
   });
-  const { otp, otpExpireAt } = helper.generateOtp();
-  const security = await Security.create({
+  const { otp, otpExpireAt } = helper.generateOTP();
+  await Security.create({
     userId,
     password: hashedPassword,
     OTP: otp,
@@ -28,20 +28,28 @@ exports.registerUser = async (req) => {
 exports.verifyOTP = async (req) => {
   const { OTP } = req.body;
 
-  const user = await Security.findOne({ OTP });
+  const security = await Security.findOne({ OTP });
 
-  if (!user) {
-    return false;
+  if (!security) {
+    throw new AppError("Invalid OTP", 401);
   }
+  const user = await User.findOne({ userId: security.userId });
+  user.isVerified = true;
+  await user.save({ validateBeforeSave: false });
   return true;
 };
 
 exports.login = async (req) => {
   const { email, password } = req.body;
 
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
 
-  if (!user || !encryption.comparePassword(password, user.password)) {
+  if (!user.isVerified) {
+    throw new AppError("User not verified", 401);
+  }
+  const security = await Security.findOne({ userId: user.userId });
+
+  if (!user || !encryption.comparePassword(password, security.password)) {
     throw new AppError("Incorrect userName or password");
   }
 

@@ -11,6 +11,14 @@ class AuthValidatetion {
     });
   }
 
+  static validateUserOTP() {
+    return celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        OTP: Joi.string().required().label("OTP"),
+      }),
+    });
+  }
+
   static validateUserLogin() {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 // const User = require("./userModel");
 
 const UserSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type: String,
     required: [true, "Security model must have a user"],
     unique: true,

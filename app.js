@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const appRouter = require("./route");
 const catchAsync = require("./src/utils/catchAsync");
+const errorController = require("./src/controllers/error/error");
 
 const app = express();
 
@@ -20,19 +21,12 @@ app.use(cookieParser());
 // });
 // app.use(limiter); // Apply the rate limiting middleware to all requests
 
-app.use(appRouter);
+appRouter(app);
 
-app.use("*", (req, res, next) => {
-  res.statusCode(400).json({
-    message: "This route not found in my server",
-  });
+app.use((req, res, next) => {
+  next(new AppError(`${req.originalUrl} is not found in my server`, 400));
 });
 
-app.use((err, req, res, next) => {
-  console.log("This is the error message", err);
-  res.statusCode(400).json({
-    err,
-  });
-});
+app.use(errorController);
 
 module.exports = app;

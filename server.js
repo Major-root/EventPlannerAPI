@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./src/database/index");
 
 dotenv.config({ path: "./.env" });
-const port = process.env.PORT;
+const port = process.env.PORT || 2025;
 
 connectDB();
 
