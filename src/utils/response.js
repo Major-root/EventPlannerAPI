@@ -1,16 +1,24 @@
-exports.response = (
-  res,
-  result = null,
-  messsage,
-  statusCode = 200,
-  status = "success"
-) => {
-  res.status(statusCode).json({
-    data: {
-      status,
-      result,
-      messsage: messsage,
-    },
+exports.unauthorized = (res, message, data = undefined) => {
+  return res.status(401).json({
+    status: false,
+    message: message || "Unauthorized",
+    data,
+  });
+};
+
+exports.forbidden = (res, message, data = undefined) => {
+  return res.status(403).json({
+    status: false,
+    message: message || "Forbidden",
+    data,
+  });
+};
+
+exports.success = (res, message, data = undefined, code = 200) => {
+  return res.status(code).json({
+    status: true,
+    message,
+    data,
   });
 };
 
@@ -23,3 +31,5 @@ exports.setCookie = (res, req, token) => {
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
 };
+
+//     response(res, user, "User logged in successfully", token);

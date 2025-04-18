@@ -43,14 +43,17 @@ exports.login = async (req) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
-  if (!user.isVerified) {
-    throw new AppError("User not verified", 401);
+  if (!user) {
+    throw new AppError("User not found", 401);
   }
+
   const security = await Security.findOne({ userId: user.userId });
 
-  if (!user || !encryption.comparePassword(password, security.password)) {
+  if (!encryption.comparePassword(password, security.password)) {
     throw new AppError("Incorrect userName or password");
+  }
+  if (!user.isVerified) {
+    throw new AppError("User not verified", 401);
   }
 
   const token = jwt.generateToken(user._id);

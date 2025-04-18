@@ -2,7 +2,7 @@ const router = require("express").Router();
 const authService = require("../services/authService");
 const AuthValidatetion = require("../middlewares/authMiddleware");
 const catchAsync = require("../utils/catchAsync");
-const { response, setCookie } = require("../utils/response");
+const response = require("../utils/response");
 const Email = require("../utils/email");
 
 router.post(
@@ -11,7 +11,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { user, otp } = await authService.registerUser(req);
     await new Email(user, otp).sendVerifyEmail();
-    response(res, "User registered successfully");
+    response.success(res, "User registered successfully");
   })
 );
 router.post(
@@ -19,7 +19,7 @@ router.post(
   AuthValidatetion.validateUserOTP(),
   catchAsync(async (req, res) => {
     await authService.verifyOTP(req);
-    response(res, "User verified successfully");
+    response.success(res, "User verified successfully");
   })
 );
 
@@ -28,8 +28,8 @@ router.post(
   AuthValidatetion.validateUserLogin(),
   catchAsync(async (req, res) => {
     const { user, token } = await authService.login(req);
-    setCookie(res, req, token);
-    response(res, "User logged in successfully", { user, token });
+    response.setCookie(res, req, token);
+    response.success(res, "User logged in successfully", { user, token });
   })
 );
 
