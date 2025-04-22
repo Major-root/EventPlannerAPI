@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../database/models");
+const User = require("../database/models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const { promisify } = require("util");
 const AppError = require("../utils/appError");
@@ -24,7 +24,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const userId = decoded.id;
 
-  const currentUser = await User.findOne({ where: { userId } });
+  const currentUser = await User.findOne({ userId });
   if (!currentUser) {
     return next(
       new AppError(

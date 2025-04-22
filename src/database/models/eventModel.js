@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slug = require("slug");
-const slug = require("slugify");
+// const slug = require("slugify");
 
 const EventSchema = new mongoose.Schema({
   eventTitle: {
@@ -38,6 +38,8 @@ const EventSchema = new mongoose.Schema({
   },
   numberOfAttendees: {
     type: Number,
+    required: [true, "Number of attendees is required"],
+    min: [0, "Number of attendees cannot be less than 0"],
     default: 0,
   },
   ticketCategories: [
@@ -50,7 +52,7 @@ const EventSchema = new mongoose.Schema({
 
 EventSchema.pre("save", function (next) {
   if (this.isNew) {
-    this.slug = slug(this.eventName, { lower: true });
+    this.slug = slug(this.eventTitle, { lower: true });
     this.eventUrl = `${this.slug}-${this._id}`;
   }
   next();

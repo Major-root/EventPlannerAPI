@@ -56,6 +56,6 @@ exports.login = async (req) => {
     throw new AppError("User not verified", 401);
   }
 
-  const token = jwt.generateToken(user._id);
+  const token = jwt.generateToken(user.userId);
   return { user, token };
 };
