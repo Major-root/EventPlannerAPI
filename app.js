@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const appRouter = require("./route");
 const catchAsync = require("./src/utils/catchAsync");
 const errorController = require("./src/controllers/error/error");
+const AppError = require("./src/utils/appError");
 
 const app = express();
 

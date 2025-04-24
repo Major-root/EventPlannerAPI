@@ -21,4 +21,30 @@ router.post(
   })
 );
 
+router.get(
+  "/getAllEvents",
+  catchAsync(async (req, res) => {
+    const events = await EventService.getAllEvents(req);
+    response.success(res, "Events retrieved successfully", { events });
+  })
+);
+
+router.get(
+  "/getEventById/:eventId",
+  EventValidation.validateGetEventById(),
+  catchAsync(async (req, res) => {
+    const event = await EventService.getEventById(req);
+    response.success(res, "Event retrieved successfully", { event });
+  })
+);
+
+router.delete(
+  "/deleteEvent/:eventId",
+  EventValidation.validateGetEventById(),
+  catchAsync(async (req, res) => {
+    await EventService.deleteEvent(req);
+    response.success(res, "Event deleted successfully");
+  })
+);
+
 module.exports = router;

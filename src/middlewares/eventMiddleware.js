@@ -4,27 +4,14 @@ class EventValidation {
   static validateCreateEvent() {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
-        eventTitle: Joi.string().required(),
-        eventDate: Joi.date().required(),
+        eventTitle: Joi.string().required().trim(),
+        eventDate: Joi.date().required().greater(Date.now()).messages({
+          "date.greater": "Event date must be in the future",
+        }),
         eventLocation: Joi.string().required(),
         eventDescription: Joi.string().required(),
         numberOfAttendees: Joi.number().required(),
       }),
-
-      // [Segments.FILES]: Joi.object().keys({
-      //   image: Joi.object({
-      //     fieldname: Joi.string().required(),
-      //     originalname: Joi.string().required(),
-      //     encoding: Joi.string().required(),
-      //     mimetype: Joi.string()
-      //       .valid("image/jpeg", "image/png", "image/jpg", "image/webp")
-      //       .required(),
-      //     buffer: Joi.any(),
-      //     size: Joi.number()
-      //       .max(5 * 1024 * 1024)
-      //       .required(), // Max 5MB
-      //   }).required(),
-      // }),
     });
   }
 
@@ -39,6 +26,14 @@ class EventValidation {
         eventLocation: Joi.string().optional(),
         eventDescription: Joi.string().optional(),
         numberOfAttendees: Joi.number().optional(),
+      }),
+    });
+  }
+
+  static validateGetEventById() {
+    return celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        eventId: Joi.string().required(),
       }),
     });
   }

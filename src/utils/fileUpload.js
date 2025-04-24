@@ -1,4 +1,6 @@
 const multer = require("multer");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./.env" });
 const sharp = require("sharp");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const AppError = require("./appError");
@@ -32,7 +34,6 @@ exports.resizeImage = async (req, res, next) => {
   if (!req.file) return next();
 
   const compressedFile = await sharp(req.file.buffer)
-    .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
     .toBuffer();

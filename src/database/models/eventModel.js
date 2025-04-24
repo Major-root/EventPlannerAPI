@@ -28,7 +28,7 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: [true, "Event cover image is required"],
   },
-  eventUrl: {
+  eventURL: {
     type: String,
     required: [true, "Event URL is required"],
   },
@@ -50,13 +50,13 @@ const EventSchema = new mongoose.Schema({
   ],
 });
 
-EventSchema.pre("save", function (next) {
-  if (this.isNew) {
-    this.slug = slug(this.eventTitle, { lower: true });
-    this.eventUrl = `${this.slug}-${this._id}`;
-  }
-  next();
-});
+// EventSchema.pre("save", function (next) {
+//   if (this.isNew) {
+//     this.slug = slug(this.eventTitle, { lower: true });
+//     this.eventUrl = `${this.slug}-${this._id}`;
+//   }
+//   next();
+// });
 
 const Event = mongoose.model("Event", EventSchema);
 module.exports = Event;
