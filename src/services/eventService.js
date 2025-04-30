@@ -4,13 +4,19 @@ const slug = require("slug").default;
 const AppError = require("../utils/appError");
 // const fileUpload = require("../utils/fileUpload");
 
+//  HANDLE DATETIME FORMATS
+
 exports.createEvent = async (req) => {
   const {
     eventTitle,
-    eventDate,
+    startDate,
+    endDate,
+    locationAddress,
     eventLocation,
     eventDescription,
     numberOfAttendees,
+    startTime,
+    endTime,
   } = req.body;
   const slugTitle = slug(eventTitle, { lower: true });
   const eventURL = `${req.protocol}://${req.get(
@@ -19,7 +25,9 @@ exports.createEvent = async (req) => {
   const event = await Event.create({
     eventOrganizer: req.user._id,
     eventTitle,
-    eventDate,
+    startDate: `${startDate}T${startTime}:00Z`,
+    endDate: `${endDate}T${endTime}:00Z`,
+    locationAddress,
     eventLocation,
     eventDescription,
     coverImage: req.imageURL,

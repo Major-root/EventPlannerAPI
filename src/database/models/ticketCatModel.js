@@ -4,13 +4,13 @@ const TicketCatSchema = new mongoose.Schema({
     type: String,
     required: [true, "Ticket category name is required"],
     enum: [
-      "VIP",
-      "Early Bird",
-      "Regular",
-      "Group",
-      "Student",
-      "Family",
-      "Corporate",
+      "vip",
+      "early bird",
+      "regular",
+      "group",
+      "student",
+      "family",
+      "corporate",
     ],
   },
   ticketCatPrice: {
@@ -27,6 +27,9 @@ const TicketCatSchema = new mongoose.Schema({
   },
   remaingingTickets: {
     type: Number,
+  },
+  ticketCatDescription: {
+    type: String,
   },
 });
 

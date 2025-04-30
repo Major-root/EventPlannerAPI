@@ -17,4 +17,15 @@ router.post(
   })
 );
 
+router.post(
+  "/createAllTicketCat/:eventId",
+  TicketCatValidation.validateAllTicketcat(),
+  catchAsync(async (req, res) => {
+    const ticketCats = await TicketCatService.createAllTicketCat(req);
+    response.success(res, "Ticket categories created successfully", {
+      ticketCats,
+    });
+  })
+);
+
 module.exports = router;

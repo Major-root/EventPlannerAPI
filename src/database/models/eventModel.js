@@ -7,13 +7,27 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: [true, "Event name is required"],
   },
-  eventDate: {
+  startDate: {
     type: Date,
     required: [true, "Event date is required"],
+  },
+  endDate: {
+    type: Date,
+    required: [true, "Event end date is required"],
+    validate: {
+      validator: function (value) {
+        return value > this.startDate;
+      },
+      message: "End date must be after start date",
+    },
   },
   eventLocation: {
     type: String,
     required: [true, "Event location is required"],
+  },
+  locationAddress: {
+    type: String,
+    required: [true, "Event location address is required"],
   },
   eventDescription: {
     type: String,

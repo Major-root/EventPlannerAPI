@@ -5,9 +5,15 @@ class EventValidation {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         eventTitle: Joi.string().required().trim(),
-        eventDate: Joi.date().required().greater(Date.now()).messages({
+        startDate: Joi.date().required().greater(Date.now()).messages({
           "date.greater": "Event date must be in the future",
         }),
+        endDate: Joi.date().required().greater(Joi.ref("startDate")).messages({
+          "date.greater": "End date must be after start date",
+        }),
+        startTime: Joi.string().required(),
+        endTime: Joi.string().required(),
+        locationAddress: Joi.string().required(),
         eventLocation: Joi.string().required(),
         eventDescription: Joi.string().required(),
         numberOfAttendees: Joi.number().required(),
