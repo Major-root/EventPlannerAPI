@@ -36,13 +36,13 @@ class TicketCatValidation {
           Joi.object().keys({
             ticketCatName: Joi.string()
               .valid(
-                "VIP",
-                "Early Bird",
-                "Regular",
-                "Group",
-                "Student",
-                "Family",
-                "Corporate"
+                "vip",
+                "early bird",
+                "regular",
+                "group",
+                "student",
+                "family",
+                "corporate"
               )
               .required(),
             ticketCatPrice: Joi.number().required(),

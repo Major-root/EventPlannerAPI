@@ -7,6 +7,14 @@ const EventValidation = require("../middlewares/eventMiddleware");
 const Email = require("../utils/email");
 const guard = require("../middlewares/guard");
 
+router.get(
+  "/:slugParam",
+  catchAsync(async (req, res) => {
+    const event = await EventService.getEventByURL(req);
+    response.success(res, "Event retrieved successfully", { event });
+  })
+);
+
 router.use(guard.protect);
 router.use(guard.restrictTo("eventPlanner", "admin"));
 

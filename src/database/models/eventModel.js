@@ -56,6 +56,22 @@ const EventSchema = new mongoose.Schema({
     min: [0, "Number of attendees cannot be less than 0"],
     default: 0,
   },
+  totalTicketsSold: {
+    type: Number,
+    default: 0,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  totalTicketCreated: {
+    type: Number,
+    default: 0,
+  },
   ticketCategories: [
     {
       type: mongoose.Schema.ObjectId,

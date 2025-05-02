@@ -1,6 +1,6 @@
 const Event = require("../database/models/eventModel");
 const TicketCat = require("../database/models/ticketCatModel");
-const slug = require("slug").default;
+const slug = require("slug");
 const AppError = require("../utils/appError");
 // const fileUpload = require("../utils/fileUpload");
 
@@ -19,9 +19,10 @@ exports.createEvent = async (req) => {
     endTime,
   } = req.body;
   const slugTitle = slug(eventTitle, { lower: true });
+  const param = `${slugTitle}-${Date.now()}`;
   const eventURL = `${req.protocol}://${req.get(
     "host"
-  )}/events/${slugTitle}-${Date.now()}`;
+  )}/api/v1/event/${param}}`;
   const event = await Event.create({
     eventOrganizer: req.user._id,
     eventTitle,
@@ -33,7 +34,7 @@ exports.createEvent = async (req) => {
     coverImage: req.imageURL,
     numberOfAttendees,
     eventURL,
-    slug: slugTitle,
+    slug: `${param}`,
   });
 
   return event;
@@ -72,4 +73,14 @@ exports.deleteEvent = async (req) => {
     })
   );
   return;
+};
+
+exports.getEventByURL = async (req) => {
+  const { slugParam } = req.params;
+  const event = await Event.findOne({ slug: slugParam }).populate(
+    "ticketCategories",
+    "ticketCatName ticketCatPrice ticketCatQuantity"
+  );
+
+  return event;
 };
