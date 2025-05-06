@@ -6,11 +6,11 @@ const TicketValidateSchema = new mongoose.Schema({
     ref: "TicketCat",
     required: [true, "Ticket ID is required"],
   },
-  eventId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Event",
-    required: [true, "Event ID is required"],
-  },
+  // eventId: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "Event",
+  //   required: [true, "Event ID is required"],
+  // },
   ticketCode: {
     type: String,
     required: [true, "Ticket code is required"],

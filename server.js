@@ -7,7 +7,7 @@ const port = process.env.PORT || 2025;
 
 connectDB();
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`My event plannner Server is running on port ${port}`);
 });
 

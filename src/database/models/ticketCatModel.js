@@ -31,6 +31,11 @@ const TicketCatSchema = new mongoose.Schema({
   ticketCatDescription: {
     type: String,
   },
+  eventId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Event",
+    required: [true, "Event ID is required"],
+  },
 });
 
 const TicketCat = mongoose.model("TicketCat", TicketCatSchema);

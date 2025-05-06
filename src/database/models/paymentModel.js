@@ -22,6 +22,10 @@ const PaymentSchema = new mongoose.Schema({
     enum: ["Pending", "Completed", "Failed"],
     default: "Pending",
   },
+  reference: {
+    type: String,
+    required: [true, "Payment reference is required"],
+  },
 });
 
 const Payment = mongoose.model("Payment", PaymentSchema);
