@@ -3,12 +3,10 @@ const mongoose = require("mongoose");
 const PaymentSchema = new mongoose.Schema({
   orderId: {
     type: mongoose.Schema.ObjectId,
+    ref: "TicketOrder",
     required: [true, "Order ID is required"],
   },
-  paymentId: {
-    type: String,
-    required: [true, "Payment ID is required"],
-  },
+
   amount: {
     type: Number,
     required: [true, "Amount is required"],
