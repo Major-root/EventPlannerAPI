@@ -21,8 +21,11 @@ router.get(
   "/verify/:reference",
   paymentMiddleware.verifyPayment(),
   catchAsync(async (req, res) => {
-    const payment = await paymentService.verifyPayment(req);
-    response.success(res, "Payment verified successfully");
+    await paymentService.verifyPayment(req);
+    response.success(
+      res,
+      "Payment verified successfully, please check your email for your ticket. Thanks"
+    );
   })
 );
 

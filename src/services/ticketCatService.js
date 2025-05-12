@@ -55,6 +55,7 @@ exports.createAllTicketCat = async (req) => {
         ticketCatPrice: item.ticketCatPrice,
         ticketCatQuantity: item.ticketCatQuantity,
         remaingingTickets: item.ticketCatQuantity,
+        eventId: event._id,
       });
       return ticketCat;
     })

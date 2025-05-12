@@ -1,18 +1,27 @@
-const { MetadataDirective } = require("@aws-sdk/client-s3");
 const Payment = require("../database/models/paymentModel");
+const Order = require("../database/models/ticketOrderModel");
+const Validate = require("../database/models/ticketValidateModel");
+const TicketCat = require("../database/models/ticketCatModel");
+const Email = require("../utils/email");
+const helper = require("../utils/helper");
 const axios = require("axios");
 const { verifyPayment, initializePayment } = require("../utils/payment")(axios);
 
 exports.initializePayment = async (req) => {
-  const { amount, email, orderId, full_name } = req.body;
+  const { email, orderId, full_name } = req.body;
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new Error("Order not found, please create an order first");
+  }
 
+  const amount = order.totalPrice;
   const response = await initializePayment({
     amount: amount * 100,
     email,
     metadata: { orderId, full_name },
   });
 
-  console.log("Response from Paystack:", response.data);
+  console.log("Response from Paystack:", response);
 
   const { reference, authorization_url } = response.data.data;
   const payment = await Payment.create({
@@ -30,15 +39,43 @@ exports.verifyPayment = async (req) => {
   const { reference } = req.params;
   const response = await verifyPayment(reference);
 
-  console.log("Response from Paystack:", response.data);
-
   if (response.data.status) {
     const payment = await Payment.findOneAndUpdate(
       { reference },
       { status: "Completed" },
       { new: true }
     );
+    const order = await Order.findOneAndUpdate(
+      { _id: payment.orderId },
+      { status: "Completed" },
+      { new: true }
+    );
 
+    const ticketCode = helper.generateUniqueId();
+    const url = `${req.protocol}://${req.get("host")}${
+      req.originalUrl
+    }?ticketCode=${ticketCode}`;
+    const ticketQRCode = await helper.generateTicketQrCode(url);
+    await Validate.create({
+      ticketId: order.ticketType,
+      ticketCode,
+    });
+    const ticket = await TicketCat.findById(order.ticketType).populate(
+      "eventId"
+    );
+    const ticketData = {
+      ticketCode,
+      ticketQRCode,
+      eventName: ticket.eventId.eventTitle,
+      eventDate: ticket.eventId.startDate,
+      eventTime: ticket.eventId.startDate,
+      eventVenue: ticket.eventId.eventLocation,
+      eventLocation: ticket.eventId.locationAddress,
+      ticketType: ticket.ticketCatName,
+      userName: order.name,
+    };
+    // send email to user with ticket code and qr code
+    await new Email(order, ticketData).sendTicketEmail();
     return;
   } else {
     throw new Error("Payment verification failed");

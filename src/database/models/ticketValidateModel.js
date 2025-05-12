@@ -15,10 +15,10 @@ const TicketValidateSchema = new mongoose.Schema({
     type: String,
     required: [true, "Ticket code is required"],
   },
-  ticketQRCode: {
-    type: String,
-    required: [true, "Ticket QR code is required"],
-  },
+  // ticketQRCode: {
+  //   type: String,
+  //   required: [true, "Ticket QR code is required"],
+  // },
   ticketStatus: {
     type: String,
     enum: ["valid", "invalid"],

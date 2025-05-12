@@ -49,4 +49,11 @@ module.exports = class Email {
     );
     return;
   }
+  async sendTicketEmail() {
+    await this.send(
+      html.ticketEmail(this.data, this.name),
+      "Your ticket has been generated"
+    );
+    return;
+  }
 };

@@ -6,7 +6,6 @@ const PaymentSchema = new mongoose.Schema({
     ref: "TicketOrder",
     required: [true, "Order ID is required"],
   },
-
   amount: {
     type: Number,
     required: [true, "Amount is required"],
@@ -23,6 +22,7 @@ const PaymentSchema = new mongoose.Schema({
   reference: {
     type: String,
     required: [true, "Payment reference is required"],
+    unique: [true, "Payment reference must be unique"],
   },
 });
 
