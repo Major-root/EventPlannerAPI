@@ -28,5 +28,14 @@ router.get(
     );
   })
 );
+router.post(
+  "/webhook",
+  paymentMiddleware.verifyWebhook(),
+  catchAsync(async (req, res) => {
+    await paymentService.verifyPayment(req);
+    console.log("Webhook received successfully");
+    response.success(res, "Webhook received successfully");
+  })
+);
 
 module.exports = router;

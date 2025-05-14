@@ -6,6 +6,8 @@ const Email = require("../utils/email");
 const helper = require("../utils/helper");
 const axios = require("axios");
 const { verifyPayment, initializePayment } = require("../utils/payment")(axios);
+const crypto = require("crypto");
+const secret = process.env.PAYSTACK_SECRET_KEY;
 
 exports.initializePayment = async (req) => {
   const { email, orderId, full_name } = req.body;
@@ -32,53 +34,6 @@ exports.initializePayment = async (req) => {
 
   return { reference, authorization_url };
 };
-
-// exports.verifyPayment = async (req) => {
-//   const { reference } = req.params;
-//   const response = await verifyPayment(reference);
-
-//   if (response.data.status) {
-//     const payment = await Payment.findOneAndUpdate(
-//       { reference },
-//       { status: "Completed" },
-//       { new: true }
-//     );
-//     const order = await Order.findOneAndUpdate(
-//       { _id: payment.orderId },
-//       { status: "Completed" },
-//       { new: true }
-//     );
-
-//     const ticketCode = helper.generateUniqueId();
-//     const url = `${req.protocol}://${req.get("host")}${
-//       req.originalUrl
-//     }?ticketCode=${ticketCode}`;
-//     const ticketQRCode = await helper.generateTicketQrCode(url);
-//     await Validate.create({
-//       ticketId: order.ticketType,
-//       ticketCode,
-//     });
-//     const ticket = await TicketCat.findById(order.ticketType).populate(
-//       "eventId"
-//     );
-//     const ticketData = {
-//       ticketCode,
-//       ticketQRCode,
-//       eventName: ticket.eventId.eventTitle,
-//       eventDate: ticket.eventId.startDate,
-//       eventTime: ticket.eventId.startDate,
-//       eventVenue: ticket.eventId.eventLocation,
-//       eventLocation: ticket.eventId.locationAddress,
-//       ticketType: ticket.ticketCatName,
-//       userName: order.name,
-//     };
-//     // send email to user with ticket code and qr code
-//     await new Email(order, ticketData).sendTicketEmail();
-//     return;
-//   } else {
-//     throw new Error("Payment verification failed", 400);
-//   }
-// };
 
 exports.verifyPayment = async (req) => {
   const { reference } = req.params;
@@ -133,7 +88,6 @@ exports.verifyPayment = async (req) => {
     }
   }
 
-  console.log("allTicketData", allTicketData);
-
   await new Email(order, allTicketData).sendTicketEmail();
+  return;
 };
