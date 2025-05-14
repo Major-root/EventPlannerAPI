@@ -4,11 +4,24 @@ const orderMiddleware = require("../middlewares/orderMiddleware");
 const catchAsync = require("../utils/catchAsync");
 const response = require("../utils/response");
 
+// router.post(
+//   "/create/:ticketType",
+//   orderMiddleware.validateOrder(),
+//   catchAsync(async (req, res, next) => {
+//     const newOrder = await orderService.createOrder(req);
+//     return response.success(
+//       res,
+//       "Order created successfully, please proceed to make your payment",
+//       newOrder
+//     );
+//   })
+// );
+
 router.post(
-  "/create/:ticketType",
-  orderMiddleware.validateOrder(),
+  "/create",
+  orderMiddleware.validateTicketOrder(),
   catchAsync(async (req, res, next) => {
-    const newOrder = await orderService.createOrder(req);
+    const newOrder = await orderService.createTicketOrder(req);
     return response.success(
       res,
       "Order created successfully, please proceed to make your payment",

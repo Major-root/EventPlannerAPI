@@ -65,3 +65,11 @@ exports.createAllTicketCat = async (req) => {
   await event.save();
   return ticketCats;
 };
+
+exports.getTicketCatById = async (req) => {
+  const ticketCat = await TicketCat.findById(req.params.ticketCatId);
+  if (!ticketCat) {
+    throw new AppError("Ticket category not found", 404);
+  }
+  return ticketCat;
+};

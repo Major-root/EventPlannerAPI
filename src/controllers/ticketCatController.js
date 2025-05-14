@@ -27,5 +27,14 @@ router.post(
     });
   })
 );
+router.get(
+  "/getTicketCatbyId/:ticketCatId",
+  catchAsync(async (req, res) => {
+    const ticketCats = await TicketCatService.getTicketCatById(req);
+    response.success(res, "Ticket categories retrieved successfully", {
+      ticketCats,
+    });
+  })
+);
 
 module.exports = router;

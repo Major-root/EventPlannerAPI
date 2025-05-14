@@ -27,6 +27,7 @@ const TicketCatSchema = new mongoose.Schema({
   },
   remaingingTickets: {
     type: Number,
+    default: this.ticketCatQuantity,
   },
   ticketCatDescription: {
     type: String,

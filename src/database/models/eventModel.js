@@ -70,7 +70,8 @@ const EventSchema = new mongoose.Schema({
   },
   totalTicketCreated: {
     type: Number,
-    default: this.numberOfAttendees,
+    default: 0,
+    // default: this.numberOfAttendees,
   },
   ticketCategories: [
     {

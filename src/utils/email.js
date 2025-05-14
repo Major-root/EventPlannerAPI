@@ -51,7 +51,7 @@ module.exports = class Email {
   }
   async sendTicketEmail() {
     await this.send(
-      html.ticketEmail(this.data, this.name),
+      html.multipleTicketEmail(this.data, this.name),
       "Your ticket has been generated"
     );
     return;
