@@ -22,7 +22,7 @@ exports.createEvent = async (req) => {
   const param = `${slugTitle}-${Date.now()}`;
   const eventURL = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/event/${param}}`;
+  )}/api/v1/event/find/${param}}`;
   const event = await Event.create({
     eventOrganizer: req.user._id,
     eventTitle,

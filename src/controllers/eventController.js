@@ -8,7 +8,7 @@ const Email = require("../utils/email");
 const guard = require("../middlewares/guard");
 
 router.get(
-  "/:slugParam",
+  "find/:slugParam",
   catchAsync(async (req, res) => {
     const event = await EventService.getEventByURL(req);
     response.success(res, "Event retrieved successfully", { event });
