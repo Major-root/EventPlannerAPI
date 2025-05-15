@@ -21,7 +21,6 @@ exports.registerUser = async (req) => {
     OTP: otp,
     OTPExpire: otpExpireAt,
   });
-
   return { user, otp };
 };
 

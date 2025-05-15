@@ -14,7 +14,7 @@ class Html {
                             <tr>
                               <td align="center">
                                 <div>
-                                  <img src="https://futoictc.com/assets/logo-white-8eb97cf5.svg" width="155" height="65" alt="logo">
+                                  <img src="https://majors3bucket042.s3.us-east-1.amazonaws.com/cbexlogo.jpeg" width="155" height="65" alt="logo">
                                 </div>
                                 <h1 style="color:#000;font-size:18px;font-weight:normal;margin:30px 0;padding:0">Email Verification - <b>CEBX EventPlanners</b></h1>
                               </td>
