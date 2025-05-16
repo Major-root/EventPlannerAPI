@@ -38,10 +38,12 @@ exports.initializePayment = async (req) => {
 exports.verifyPayment = async (req) => {
   console.log("Verifying payment, in the verifyPayment function");
   const reference = req.params?.reference || req.body?.data?.reference;
+  console.log("Payment reference:", reference);
   const response = await verifyPayment(reference);
+  console.log("Payment verification response:", response);
 
   if (response.data.status !== "success") {
-    throw new Error("Payment verification failed");
+    throw new Error("Payment verification failed", 400);
   }
 
   console.log("Payment verified successfully, updating order status");
