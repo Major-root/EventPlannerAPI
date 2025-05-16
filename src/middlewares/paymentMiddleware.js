@@ -32,7 +32,6 @@ class PaymentMiddleware {
         console.log("Webhook hash verified");
         return next();
       } else {
-        console.log("Invalid IP address", 403);
         throw new AppError("Invalid IP address", 403);
       }
     };

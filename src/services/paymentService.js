@@ -36,6 +36,7 @@ exports.initializePayment = async (req) => {
 };
 
 exports.verifyPayment = async (req) => {
+  console.log("Verifying payment, in the verifyPayment function");
   const reference = req.params?.reference || req.body?.data?.reference;
   const response = await verifyPayment(reference);
 
