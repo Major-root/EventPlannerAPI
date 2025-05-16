@@ -32,9 +32,16 @@ router.post(
   "/webhook",
   (req, res, next) => {
     console.log("Webhook received", req.originalUrl);
+    console.log("Webhook headers:", req.headers);
+    console.log("Webhook body:", req.body);
     next();
   },
   paymentMiddleware.verifyWebhook(),
+  (req, res, next) => {
+    console.log("Webhook middleware passed", req.originalUrl);
+    console.log("Webhook body:", req.body);
+    next();
+  },
   catchAsync(async (req, res) => {
     console.log("Payment webhook received", req.originalUrl);
     await paymentService.verifyPayment(req);
