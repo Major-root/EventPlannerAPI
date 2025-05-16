@@ -31,7 +31,8 @@ class PaymentMiddleware {
 
       const hash = crypto
         .createHmac("sha512", secret)
-        .update(JSON.stringify(req.body));
+        .update(JSON.stringify(req.body))
+        .digest("hex");
       console.log("Hash:", hash);
       console.log(req.headers["x-paystack-signature"]);
       console.log(hash == req.headers["x-paystack-signature"]);
