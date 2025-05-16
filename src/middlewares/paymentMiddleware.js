@@ -28,13 +28,13 @@ class PaymentMiddleware {
       const allowedIps = ["52.31.139.75", "52.49.173.169", "52.214.14.220"];
       console.log("Webhook IPs:", allowedIps);
       console.log("Webhook IP:", req.headers["x-forwarded-for"]);
-      console.log("secret", secret);
 
       const hash = crypto
         .createHmac("sha512", secret)
         .update(JSON.stringify(req.body));
       if (hash == req.headers["x-paystack-signature"]) {
         const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+        console.log("Webhook IP from req.socket.remoteAddress:", ip);
         const cleanIp = ip.replace("::ffff:", "");
 
         if (allowedIps.includes(cleanIp)) {
