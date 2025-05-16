@@ -32,8 +32,6 @@ router.post(
   "/webhook",
   (req, res, next) => {
     console.log("Webhook received", req.originalUrl);
-    console.log("Webhook headers:", req.headers);
-    console.log("Webhook body:", req.body);
     next();
   },
   paymentMiddleware.verifyWebhook(),

@@ -24,7 +24,12 @@ class PaymentMiddleware {
   }
   static verifyWebhook() {
     return (req, res, next) => {
+      console.log("In webhook middleware");
       const allowedIps = ["52.31.139.75", "52.49.173.169", "52.214.14.220"];
+      console.log("Webhook IPs:", allowedIps);
+      console.log("Webhook IP:", req.headers["x-forwarded-for"]);
+      console.log("secret", secret);
+
       const hash = crypto
         .createHmac("sha512", secret)
         .update(JSON.stringify(req.body));
@@ -34,7 +39,10 @@ class PaymentMiddleware {
 
         if (allowedIps.includes(cleanIp)) {
           return next();
-        } else throw new AppError("Invalid IP address", 403);
+        } else {
+          console.log("Invalid IP address", 403);
+          throw new AppError("Invalid IP address", 403);
+        }
       }
     };
   }
