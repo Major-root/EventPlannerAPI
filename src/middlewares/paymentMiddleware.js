@@ -32,6 +32,9 @@ class PaymentMiddleware {
       const hash = crypto
         .createHmac("sha512", secret)
         .update(JSON.stringify(req.body));
+      console.log("Hash:", hash);
+      console.log(req.headers["x-paystack-signature"]);
+      console.log(hash == req.headers["x-paystack-signature"]);
       if (hash == req.headers["x-paystack-signature"]) {
         const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
         console.log("Webhook IP from req.socket.remoteAddress:", ip);
@@ -39,10 +42,10 @@ class PaymentMiddleware {
 
         if (allowedIps.includes(cleanIp)) {
           return next();
-        } else {
-          console.log("Invalid IP address", 403);
-          throw new AppError("Invalid IP address", 403);
         }
+      } else {
+        console.log("Invalid IP address", 403);
+        throw new AppError("Invalid IP address", 403);
       }
     };
   }
