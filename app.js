@@ -17,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
+  console.log("Welcome to the Event Ticketing API");
+  console.log("Request URL:", req.originalUrl);
   res.status(200).json({
     status: "success",
     message: "Welcome to the Event Ticketing API",

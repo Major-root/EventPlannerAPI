@@ -30,6 +30,10 @@ router.get(
 );
 router.post(
   "/webhook",
+  (req, res, next) => {
+    console.log("Webhook received", req.originalUrl);
+    next();
+  },
   paymentMiddleware.verifyWebhook(),
   catchAsync(async (req, res) => {
     console.log("Payment webhook received", req.originalUrl);
