@@ -43,6 +43,9 @@ class PaymentMiddleware {
 
         if (allowedIps.includes(cleanIp)) {
           return next();
+        } else {
+          console.log("Invalid IP address:", cleanIp, 403);
+          throw new AppError("Invalid IP address", 403);
         }
       } else {
         console.log("Invalid IP address", 403);
