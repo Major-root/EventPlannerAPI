@@ -42,7 +42,7 @@ exports.verifyPayment = async (req) => {
   const response = await verifyPayment(reference);
   console.log("Payment verification response:", response);
 
-  if (response.data.status !== "success") {
+  if (!response.data.status) {
     throw new Error("Payment verification failed", 400);
   }
 
