@@ -36,24 +36,19 @@ exports.initializePayment = async (req) => {
 };
 
 exports.verifyPayment = async (req) => {
-  console.log("Verifying payment, in the verifyPayment function");
   const reference = req.params?.reference || req.body?.data?.reference;
-  console.log("Payment reference:", reference);
   const response = await verifyPayment(reference);
-  console.log("Payment verification response:", response);
 
   if (!response.data.status) {
     throw new Error("Payment verification failed", 400);
   }
 
-  console.log("Payment verified successfully, updating order status");
   const payment = await Payment.findOneAndUpdate(
     { reference },
     { status: "Completed" },
     { new: true }
   );
 
-  console.log("done with payment update, looking for order");
   const order = await Order.findOneAndUpdate(
     { _id: payment.orderId },
     { status: "Completed" },
@@ -92,8 +87,6 @@ exports.verifyPayment = async (req) => {
       });
     }
   }
-  console.log("All ticket data:", allTicketData);
-  console.log("Sending ticket email to user");
 
   await new Email(order, allTicketData).sendTicketEmail();
   return;
